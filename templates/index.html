@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POLLUTION DETECTION USING SATELLITE DATA</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+<div class="app-layout">
+
+    <!-- LEFT PROPORTIONATE DASHBOARD -->
+    <aside class="dashboard-panel">
+
+        <!-- HEADER -->
+        <header class="dashboard-header">
+            <div class="brand-title">POLLUTION DETECTION USING SATELLITE DATA</div>
+            
+        </header>
+
+        <!-- DASHBOARD NAVIGATION TABS -->
+        <nav class="dashboard-nav">
+            <button class="nav-tab active" data-tab="metrics" type="button">1. Satellite Indicators</button>
+            <button class="nav-tab" data-tab="reports" type="button">2. Impact Reports</button>
+            <button class="nav-tab" data-tab="trends" type="button">3. Pollution Forecasting </button>
+            <button class="nav-tab" data-tab="hotspots" type="button">4. Pollution Hotspots</button>
+        </nav>
+
+        <!-- SEARCH BAR (Global across tabs) -->
+        <section class="search-container">
+            <form id="search-form" class="search-form">
+                <input
+                    type="text"
+                    id="search-input"
+                    placeholder="Search city"
+                    autocomplete="off"
+                    required>
+                <button type="submit" id="search-btn">Analyze</button>
+            </form>
+            <div id="search-status" class="search-status"></div>
+        </section>
+
+        <!-- LOCATION SUMMARY -->
+        <div class="location-banner" id="location-banner" style="display: none;">
+            <div class="loc-details">
+                <strong id="location-name">—</strong>
+                <span id="location-coordinates">—</span>
+            </div>
+           
+        </div>
+
+        <!-- TAB 1: SATELLITE INDICATORS (METRICS) -->
+        <section class="tab-content active" id="tab-metrics">
+            <div class="domain-toggle">
+                <button class="domain-btn active" data-domain="air" type="button">Air Quality</button>
+                <button class="domain-btn" data-domain="water" type="button">Water Bodies</button>
+                <button class="domain-btn" data-domain="land" type="button">Land Cover</button>
+            </div>
+
+            <div class="metrics-grid" id="metrics-grid">
+                <div class="empty-state">Search a city above to display satellite metrics.</div>
+            </div>
+        </section>
+
+        <!-- TAB 2: DETAILED IMPACT REPORTS -->
+        <section class="tab-content" id="tab-reports">
+            <div id="reports-container">
+                <div class="empty-state">Search a city above to generate the environmental impact assessment.</div>
+            </div>
+        </section>
+
+        <!-- TAB 3: TEMPORAL TRENDS & AI FORECAST -->
+        <section class="tab-content" id="tab-trends">
+            <div class="forecast-toolbar">
+                <div class="toolbar-label">Machine Learning Predictive Model:</div>
+                <div class="model-select-group">
+                    <select id="ml-model-select">
+                        <option value="lightgbm">LightGBM Regressor</option>
+                        <option value="xgboost" selected>XGBoost Regressor</option>
+                        <option value="random_forest">Random Forest Regressor</option>
+                    </select>
+                    <button type="button" id="run-forecast-btn" class="forecast-btn">Run Forecast</button>
+                </div>
+            </div>
+
+            <!-- METRIC SELECTOR TOGGLE BAR -->
+            <div class="metric-toggle-section">
+                <div class="toolbar-label">Select Time-Series Metric:</div>
+                <div class="metric-toggle-bar" id="metric-toggle-bar">
+                    <button class="metric-toggle-btn active" data-metric="no2" type="button">NO₂</button>
+                    <button class="metric-toggle-btn" data-metric="so2" type="button">SO₂</button>
+                    <button class="metric-toggle-btn" data-metric="o3" type="button">O₃</button>
+                    <button class="metric-toggle-btn" data-metric="ch4" type="button">CH₄</button>
+                    <button class="metric-toggle-btn" data-metric="hcho" type="button">HCHO</button>
+                    <button class="metric-toggle-btn" data-metric="aerosol_index" type="button">Aerosol Index</button>
+                    <button class="metric-toggle-btn" data-metric="ndwi" type="button">NDWI</button>
+                    <button class="metric-toggle-btn" data-metric="mndwi" type="button">MNDWI</button>
+                    <button class="metric-toggle-btn" data-metric="ndvi" type="button">NDVI</button>
+                    <button class="metric-toggle-btn" data-metric="evi" type="button">EVI</button>
+                </div>
+            </div>
+
+            <div class="chart-wrapper">
+                <div class="chart-header">
+                    <h3 id="trend-chart-title">NO₂ (Nitrogen Dioxide) — Observations & Prediction Curve</h3>
+                    <span id="trend-chart-unit">mol/m²</span>
+                </div>
+                <div class="canvas-container">
+                    <canvas id="trend-chart"></canvas>
+                </div>
+            </div>
+
+            <div id="forecast-eval-card" class="forecast-eval-card" style="display: none;">
+                <div class="eval-header-row">
+                    <h3 class="eval-title">Model Performance Comparison (R² Score)</h3>
+                </div>
+                <div class="canvas-container" style="height: 240px;">
+                    <canvas id="model-comparison-chart"></canvas>
+                </div>
+                <div id="eval-metrics-summary" class="eval-metrics-summary"></div>
+            </div>
+
+        </section>
+
+        <!-- TAB 4: POLLUTION HOTSPOTS -->
+        <section class="tab-content" id="tab-hotspots">
+            <div class="hotspots-header">
+                <span class="hotspot-section-title">Spatial Hotspot Identification </span>
+                
+            </div>
+            <div id="hotspots-list" class="hotspots-list">
+                <div class="empty-state">Hotspots will be identified after searching a location.</div>
+            </div>
+        </section>
+
+    </aside>
+
+    <!-- RIGHT PROPORTIONATE FULL SATELLITE MAP -->
+    <main class="map-panel">
+        <div id="map"></div>
+    </main>
+
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="/static/js/app.js"></script>
+
+</body>
+</html>

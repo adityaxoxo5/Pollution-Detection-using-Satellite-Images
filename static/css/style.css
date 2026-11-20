@@ -1,0 +1,830 @@
+/* ========================================================
+   TERRASCOPE - SATELLITE ENVIRONMENTAL INTELLIGENCE
+   Times New Roman, Proportionate Split-Screen Architecture
+======================================================== */
+
+:root {
+    --bg-dark: #090d16;
+    --panel-bg: #0d1422;
+    --card-bg: #111a2c;
+    --card-border: #1e2c44;
+    --text-primary: #e6edf5;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+    --accent: #38bdf8;
+    --accent-green: #34d399;
+    --accent-orange: #fb923c;
+    --accent-red: #f87171;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Times New Roman", Times, serif !important;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: var(--bg-dark);
+    color: var(--text-primary);
+}
+
+/* ========================================================
+   PROPORTIONATE 50/50 SPLIT-SCREEN LAYOUT
+======================================================== */
+
+.app-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* ========================================================
+   LEFT DASHBOARD PANEL
+======================================================== */
+
+.dashboard-panel {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    background: var(--panel-bg);
+    border-right: 1px solid var(--card-border);
+    padding: 24px 26px;
+    gap: 16px;
+}
+
+.dashboard-panel::-webkit-scrollbar {
+    width: 6px;
+}
+.dashboard-panel::-webkit-scrollbar-thumb {
+    background: #1e2b40;
+    border-radius: 3px;
+}
+
+/* HEADER */
+.dashboard-header {
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--card-border);
+}
+
+.brand-title {
+    font-size: 24px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    color: #ffffff;
+}
+
+.brand-tagline {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-top: 2px;
+    font-style: italic;
+}
+
+/* DASHBOARD NAVIGATION TABS */
+.dashboard-nav {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+    background: #070b13;
+    padding: 4px;
+    border: 1px solid var(--card-border);
+    border-radius: 4px;
+}
+
+.nav-tab {
+    padding: 9px 4px;
+    background: transparent;
+    color: var(--text-secondary);
+    border: 1px solid transparent;
+    border-radius: 3px;
+    font-size: 12.5px;
+    cursor: pointer;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.nav-tab:hover {
+    color: #ffffff;
+    background: #121c2d;
+}
+
+.nav-tab.active {
+    background: #15233a;
+    color: var(--accent);
+    border-color: #233959;
+    font-weight: bold;
+}
+
+/* SEARCH BAR */
+.search-container {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.search-form {
+    display: flex;
+    gap: 8px;
+}
+
+.search-form input {
+    flex: 1;
+    height: 38px;
+    padding: 0 12px;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 4px;
+    color: #ffffff;
+    font-size: 14px;
+    outline: none;
+}
+
+.search-form input:focus {
+    border-color: var(--accent);
+}
+
+.search-form button {
+    padding: 0 18px;
+    height: 38px;
+    background: #1a2f4c;
+    color: #ffffff;
+    border: 1px solid #2b456e;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.search-form button:hover {
+    background: #234068;
+}
+
+.search-status {
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.4;
+}
+
+/* LOCATION BANNER */
+.location-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px;
+    background: #0d1728;
+    border: 1px solid #1c2e4a;
+    border-radius: 4px;
+}
+
+.loc-details strong {
+    font-size: 15px;
+    color: #ffffff;
+    display: block;
+}
+
+.loc-details span {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.sensor-badge {
+    font-size: 11px;
+    padding: 3px 8px;
+    background: rgba(52, 211, 153, 0.1);
+    color: var(--accent-green);
+    border: 1px solid rgba(52, 211, 153, 0.3);
+    border-radius: 3px;
+    white-space: nowrap;
+}
+
+/* TAB CONTENT WRAPPERS */
+.tab-content {
+    display: none;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.tab-content.active {
+    display: flex;
+}
+
+/* DOMAIN TOGGLE BUTTONS (Air, Water, Land) */
+.domain-toggle {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+}
+
+.domain-btn {
+    padding: 8px 10px;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    color: var(--text-secondary);
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.domain-btn:hover {
+    color: #ffffff;
+    background: #16243b;
+}
+
+.domain-btn.active {
+    background: #1a2e4a;
+    color: var(--accent);
+    border-color: #2b4975;
+    font-weight: bold;
+}
+
+/* ========================================================
+   CUTE METRIC BOXES (NO HOVER EFFECTS, JUST NAME & VALUE)
+======================================================== */
+
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.metric-box {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 4px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-height: 82px;
+    justify-content: center;
+    /* Explicitly no hover animations */
+    transition: none;
+    transform: none;
+}
+
+.metric-title {
+    font-size: 13.5px;
+    font-weight: bold;
+    color: #cbd5e1;
+}
+
+.metric-val {
+    font-size: 19px;
+    font-weight: bold;
+    color: #38bdf8;
+    letter-spacing: 0.5px;
+}
+
+.metric-sub {
+    font-size: 10.5px;
+    color: var(--text-muted);
+}
+
+.empty-state {
+    grid-column: 1 / -1;
+    padding: 24px 16px;
+    text-align: center;
+    font-size: 14px;
+    color: var(--text-secondary);
+    background: var(--card-bg);
+    border: 1px dashed var(--card-border);
+    border-radius: 4px;
+}
+
+/* ========================================================
+   TAB 2: DETAILED IMPACT REPORTS
+======================================================== */
+
+.report-section {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.health-score-box {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 4px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.health-score-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.health-score-title {
+    font-size: 15px;
+    font-weight: bold;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+}
+
+.ai-model-tag {
+    font-size: 11px;
+    font-weight: normal;
+    color: var(--accent);
+    margin-left: 6px;
+    font-style: italic;
+    background: rgba(56, 189, 248, 0.1);
+    padding: 1px 6px;
+    border-radius: 3px;
+    border: 1px solid rgba(56, 189, 248, 0.25);
+}
+
+.health-score-badge {
+    padding: 4px 10px;
+    font-size: 12px;
+    border-radius: 3px;
+    font-weight: bold;
+}
+
+.health-score-badge.good {
+    background: rgba(52, 211, 153, 0.15);
+    color: var(--accent-green);
+    border: 1px solid rgba(52, 211, 153, 0.4);
+}
+
+.health-score-badge.moderate {
+    background: rgba(251, 146, 60, 0.15);
+    color: var(--accent-orange);
+    border: 1px solid rgba(251, 146, 60, 0.4);
+}
+
+.health-score-badge.critical {
+    background: rgba(248, 113, 113, 0.15);
+    color: var(--accent-red);
+    border: 1px solid rgba(248, 113, 113, 0.4);
+}
+
+.health-progress-bar {
+    width: 100%;
+    height: 8px;
+    background: #080d16;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.health-progress-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 4px;
+}
+
+.health-score-summary {
+    font-size: 13.5px;
+    color: #e2e8f0;
+    line-height: 1.5;
+}
+
+.report-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 4px;
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.report-card-title {
+    font-size: 14.5px;
+    font-weight: bold;
+    color: var(--accent);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding-bottom: 4px;
+}
+
+.report-bullets {
+    list-style: square inside;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.report-bullets li {
+    font-size: 13.5px;
+    color: #cbd5e1;
+    line-height: 1.5;
+}
+
+/* ========================================================
+   TAB 3: TEMPORAL TRENDS & AI FORECASTING
+======================================================== */
+
+.forecast-toolbar {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 4px;
+    padding: 12px 14px;
+}
+
+.toolbar-label {
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.model-select-group {
+    display: flex;
+    gap: 8px;
+}
+
+.model-select-group select {
+    flex: 1;
+    height: 34px;
+    background: #080d16;
+    color: #ffffff;
+    border: 1px solid var(--card-border);
+    padding: 0 10px;
+    border-radius: 3px;
+    font-size: 13px;
+    outline: none;
+}
+
+.forecast-btn {
+    height: 34px;
+    padding: 0 16px;
+    background: #1a2f4c;
+    color: var(--accent);
+    border: 1px solid #2b456e;
+    border-radius: 3px;
+    font-size: 13px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.forecast-btn:hover {
+    background: #234068;
+}
+
+/* Metric Toggle Section for Time-Series */
+.metric-toggle-section {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 4px;
+    padding: 12px 14px;
+}
+
+.metric-toggle-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.metric-toggle-btn {
+    flex: 1 1 calc(20% - 6px);
+    min-width: 64px;
+    padding: 7px 6px;
+    background: #080d16;
+    color: var(--text-secondary);
+    border: 1px solid var(--card-border);
+    border-radius: 3px;
+    font-size: 12px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.15s ease-in-out;
+}
+
+.metric-toggle-btn:hover {
+    color: #ffffff;
+    border-color: #2b456e;
+    background: #111a2c;
+}
+
+.metric-toggle-btn.active {
+    background: #1a2f4c;
+    color: var(--accent);
+    border-color: var(--accent);
+    font-weight: bold;
+}
+
+.chart-wrapper {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 4px;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.chart-header h3 {
+    font-size: 14px;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+#trend-chart-unit {
+    font-size: 12px;
+    color: var(--accent);
+}
+
+.canvas-container {
+    position: relative;
+    width: 100%;
+    height: 220px;
+}
+
+/* IEEE Scientific Evaluation Card */
+.forecast-eval-card {
+    background: var(--card-bg);
+    border: 1px solid #243550;
+    border-radius: 4px;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.eval-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding-bottom: 6px;
+}
+
+.eval-title {
+    font-size: 14px;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+.eval-badge {
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 12px;
+    background: rgba(56, 189, 248, 0.15);
+    color: var(--accent);
+    border: 1px solid rgba(56, 189, 248, 0.3);
+}
+
+.eval-metrics-summary {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-top: 4px;
+}
+
+.eval-model-pill {
+    background: #070b13;
+    border: 1px solid var(--card-border);
+    border-radius: 3px;
+    padding: 8px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.eval-model-pill.highlight {
+    border-color: #38bdf8;
+    background: #0d192d;
+}
+
+.eval-pill-name {
+    font-size: 12px;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+.eval-pill-r2 {
+    font-size: 14px;
+    font-weight: bold;
+    color: var(--accent-green);
+}
+
+.eval-pill-sub {
+    font-size: 11px;
+    color: var(--text-muted);
+}
+
+.eval-metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+}
+
+.eval-stat {
+    background: #070b13;
+    border: 1px solid var(--card-border);
+    border-radius: 3px;
+    padding: 8px;
+    text-align: center;
+}
+
+.eval-stat-label {
+    font-size: 11px;
+    color: var(--text-secondary);
+}
+
+.eval-stat-val {
+    font-size: 16px;
+    font-weight: bold;
+    color: var(--accent-green);
+    margin-top: 2px;
+}
+
+.feature-importance-box {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.importance-title {
+    font-size: 12px;
+    color: var(--text-secondary);
+    font-weight: bold;
+}
+
+.importance-item {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: #cbd5e1;
+    padding: 3px 0;
+    border-bottom: 1px dotted rgba(255, 255, 255, 0.07);
+}
+
+.ieee-note {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-style: italic;
+    line-height: 1.4;
+    margin-top: 4px;
+}
+
+/* ========================================================
+   TAB 4: POLLUTION HOTSPOTS
+======================================================== */
+
+.hotspots-header {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding-bottom: 4px;
+}
+
+.hotspot-section-title {
+    font-size: 14.5px;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+.hotspot-subtitle {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.hotspots-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.hotspot-item {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 4px;
+    padding: 12px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.hotspot-left {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.hotspot-place-name {
+    font-size: 14.5px;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+.hotspot-coords {
+    font-size: 11.5px;
+    color: var(--text-muted);
+}
+
+.hotspot-driver {
+    font-size: 12px;
+    color: #e2e8f0;
+}
+
+.hotspot-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
+}
+
+.hotspot-score-pill {
+    padding: 3px 8px;
+    font-size: 11px;
+    font-weight: bold;
+    border-radius: 3px;
+    background: rgba(251, 146, 60, 0.15);
+    color: var(--accent-orange);
+    border: 1px solid rgba(251, 146, 60, 0.35);
+    white-space: nowrap;
+}
+
+.focus-btn {
+    padding: 4px 10px;
+    font-size: 11px;
+    background: #19273c;
+    color: var(--accent);
+    border: 1px solid #283e5f;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.focus-btn:hover {
+    background: #233754;
+}
+
+/* ========================================================
+   RIGHT PANEL: FULL SATELLITE IMAGE (ZERO CLUTTER)
+======================================================== */
+
+.map-panel {
+    width: 100%;
+    height: 100vh;
+    position: relative;
+    overflow: hidden;
+    background: #000000;
+}
+
+#map {
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+/* Clean Leaflet Controls */
+.leaflet-control-zoom a {
+    background: #111a2c !important;
+    color: #ffffff !important;
+    border-color: #243550 !important;
+    font-size: 16px !important;
+}
+
+.leaflet-control-attribution {
+    background: rgba(9, 13, 22, 0.75) !important;
+    color: #94a3b8 !important;
+    font-size: 10px !important;
+}
+
+.leaflet-control-attribution a {
+    color: #38bdf8 !important;
+}
+
+/* RESPONSIVE BREAKPOINT */
+@media (max-width: 900px) {
+    .app-layout {
+        grid-template-columns: 1fr;
+        height: auto;
+        overflow: auto;
+    }
+    .dashboard-panel {
+        height: auto;
+        max-height: none;
+    }
+    .map-panel {
+        height: 60vh;
+        min-height: 450px;
+    }
+    .metrics-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
